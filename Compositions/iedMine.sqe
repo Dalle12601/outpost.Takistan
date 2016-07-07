@@ -1,0 +1,93 @@
+version=52;
+center[]={5889.8633,83.039993,11643.254};
+class items
+{
+	items=4;
+	class Item0
+	{
+		dataType="Object";
+		class PositionInfo
+		{
+			position[]={1.4418945,0.69317627,0.40136719};
+		};
+		side="Empty";
+		flags=5;
+		class Attributes
+		{
+		};
+		id=111;
+		type="Land_cargo_house_slum_F";
+		atlOffset=0.16571045;
+	};
+	class Item1
+	{
+		dataType="Object";
+		class PositionInfo
+		{
+			position[]={-2.4624023,1.1440048,0.39746094};
+		};
+		side="Empty";
+		class Attributes
+		{
+			name="ied1";
+		};
+		id=113;
+		type="IEDUrbanBig_F";
+		atlOffset=0.81252289;
+		class CustomAttributes
+		{
+			class Attribute0
+			{
+				property="ace_isMedicalFacility";
+				expression="_this setVariable [""ace_medical_isMedicalFacility"",_value,true];";
+				class Value
+				{
+					class data
+					{
+						class type
+						{
+							type[]=
+							{
+								"BOOL"
+							};
+						};
+						value=0;
+					};
+				};
+			};
+			nAttributes=1;
+		};
+	};
+	class Item2
+	{
+		dataType="Object";
+		class PositionInfo
+		{
+			position[]={-2.5253906,0.7379837,0.296875};
+		};
+		side="Empty";
+		flags=4;
+		class Attributes
+		{
+		};
+		id=114;
+		type="Land_CampingTable_small_F";
+	};
+	class Item3
+	{
+		dataType="Object";
+		class PositionInfo
+		{
+			position[]={3.5458984,0.35918427,-1.0996094};
+			angles[]={0,0.78539819,0};
+		};
+		side="Empty";
+		flags=4;
+		class Attributes
+		{
+		};
+		id=115;
+		type="Land_Portable_generator_F";
+		atlOffset=-7.6293945e-006;
+	};
+};
