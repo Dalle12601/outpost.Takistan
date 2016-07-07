@@ -38,7 +38,11 @@
  */
 
 params ["_tskTitle", "_tskDescL", "_tskDest", "_enemySpawn1[]"];		// Getting the passed parameters
-private "_enemySquads";
+
+// Variable for storing the squads spawned
+private ["_enemySquads", "_enemySpawnMarkers"];
+_enemySquads = [];
+
 
 // Now we need to rename the parameters to variables we can use
 _taskTitle 		= _this select 0;
@@ -49,13 +53,12 @@ _enemySpawn 	= _this select 3;
 _taskState		= "ASSIGNED";
 
 // Make an array with the squad types:
-_squadTypes [	(configFile >> "CfgGroups" >> "Indep" >> "LOP_AM" >> "Infantry" >> "LOP_AM_Support_section"),
+_squadTypes = [	(configFile >> "CfgGroups" >> "Indep" >> "LOP_AM" >> "Infantry" >> "LOP_AM_Support_section"),
 				(configFile >> "CfgGroups" >> "Indep" >> "LOP_AM" >> "Infantry" >> "LOP_AM_Rifle_squad"),
 				(configFile >> "CfgGroups" >> "Indep" >> "LOP_AM" >> "Infantry" >> "LOP_AM_AT_section"),
 				(configFile >> "CfgGroups" >> "Indep" >> "LOP_AM" >> "Infantry" >> "LOP_AM_Patrol_section")];
-
 				
-				
+			
 /* FOR DEBUGGING
 for "i" from 1 to count _enemySpawn do
 {
@@ -81,26 +84,39 @@ _taskVar = [west, [_task], [_taskDescL, _taskTitle], _zoneToDefend, _taskState, 
 
 
 
-// Make an array (_enemySpawnMarker) with positions to spawn enemies
-if(count _enemySpawn > 0) then 
-{
-	_enemySpawnMarker 	= getMarkerPos (_enemySpawn select 0);
-	for "i" from 1 to (count _enemySpawn) do
-	{
-		_enemySpawnMarker 	pushback getMarkerPos (_enemySpawn select i);
-	};
-};
-
 // Spawn the enemy units!
 if(nrOfEnemySquadsAtAO > 0) then {
 	// Spawn enemies, if parameter says so
 	for "i" from 1 to nrOfEnemySquadsAtAO do
 	{
 		_squadToSpawn = floor random 4;
-		_placeToSpawn = floor random count _enemySpawnMarker;
-		
+		_placeToSpawn = floor random (count _enemySpawn);
 
-		_enemySquads pushBack [_enemySpawnMarker select _placeToSpawn, resistance, _squadTypes select _squadToSpawn ] Call BIS_fnc_spawnGroup;
+
+		// _enemySquads pushBack [_enemySpawnMarkers select _placeToSpawn, resistance, (_squadTypes select 2) ] Call BIS_fnc_spawnGroup;
+		// [getMarkerPos (_enemySpawn select _placeToSpawn), resistance, (configFile >> "CfgGroups" >> "Indep" >> "LOP_AM" >> "Infantry" >> "LOP_AM_Support_section")] Call BIS_fnc_spawnGroup;
+		_tempGroup = [getMarkerPos (_enemySpawn select _placeToSpawn), resistance, _squadTypes select _squadToSpawn] Call BIS_fnc_spawnGroup;
+		
+		// Creating tasks for the AI
+		_grpTask = floor random 2;
+		switch (_grpTask) do{
+			// DEFEND waypoint
+			case 0:
+			{	
+				
+				[_tempGroup, getMarkerPos (_enemySpawn select _placeToSpawn), 100, 2, true] call CBA_fnc_taskDefend;
+			};
+			
+			// PATROL
+			case 1:
+			{
+				[_tempGroup, getMarkerPos (_enemySpawn select _placeToSpawn), 100, 10] call CBA_fnc_taskDefend;
+			};
+			
+		
+		};
+		
+		
 	};
 };	
 	
@@ -148,7 +164,7 @@ if(nrOfEnemySquadsAtAO > 0) then {
 };
 */
 
-
+// Assign the global variable to task ID
 currentAssignedTask = _task;
 
 
