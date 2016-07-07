@@ -49,7 +49,7 @@ _enemySpawn1 	= _this select 4;
 _enemySpawn2	= _this select 5;
 
 
-_task = "task_";
+_task = "task_" + str(tasksDone);
 
 
 // Make sure the task can't be startet 2 times
@@ -118,6 +118,7 @@ if(nrOfEnemySquadsForAssist > 0) then {
 			doWeHaveATask = false;
 			publicVariable "doWeHaveATask";
 			tasksDone = tasksDone + 1;
+			stratMap addAction ["Open strategic map","openStrategicMap.sqf"];
 		};
 		
 		if(({alive _x} count units _InfSquad1) < 1) then {
@@ -126,6 +127,7 @@ if(nrOfEnemySquadsForAssist > 0) then {
 			doWeHaveATask = false;
 			publicVariable "doWeHaveATask";
 			tasksDone = tasksDone + 1;
+			stratMap addAction ["Open strategic map","openStrategicMap.sqf"];
 		};
 		
 		
