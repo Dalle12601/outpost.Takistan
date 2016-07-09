@@ -15,3 +15,4 @@ currentAssignedTask 			= 0;
 // Variable to keep track of action ID for strategic map
 actionID	= 0;
 
+[] spawn {call compile preprocessFileLineNumbers "EPD\Ied_Init.sqf";};

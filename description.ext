@@ -5,6 +5,13 @@ respawnDelay = 10;
 respawnDialog = 1;
 respawnOnStart = 0;
 
+/*
+onLoadMission = "Penis-Mission";
+loadScreen = "images/thump1.paa";
+*/
+
+
+
 
 class Params
 {
@@ -50,6 +57,7 @@ class Params
 
 class CfgFunctions {
     #include "LARs\LARs_spawnComp.cpp"
+	#include "EPD\EPDcfgFunctions.hpp"
 };
 
 #include "compositions\compositions.cfg"
