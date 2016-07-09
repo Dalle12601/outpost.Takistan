@@ -17,7 +17,7 @@
 
 
 // Get parameters
-params ["_nrOfEnemies", "_enemySpawn", "_squadTypes", "_distanceToSpawn"];
+params ["_nrOfEnemies", "_enemySpawn", "_squadTypes", "_distanceToSpawn", "_doPatrol"];
 
 // Array to store the squads in
 private "_spawnedSquads";
@@ -33,9 +33,9 @@ if(count _this isEqualTo 4) then
 
 
 // Spawn the enemy units!
-if(nrOfEnemySquadsAtAO > 0) then {
+if(_nrOfEnemies > 0) then {
 	// Spawn enemies, if parameter says so
-	for "i" from 0 to nrOfEnemySquadsAtAO - 1 do
+	for "i" from 0 to _nrOfEnemies - 1 do
 	{
 		_squadToSpawn = floor random 4;
 		_placeToSpawn = floor random (count _enemySpawn);
@@ -46,30 +46,36 @@ if(nrOfEnemySquadsAtAO > 0) then {
 		_tempGroup = [getMarkerPos (_enemySpawn select _placeToSpawn), resistance, _squadTypes select _squadToSpawn] Call BIS_fnc_spawnGroup;
 		_spawnedSquads set [i, _tempGroup];
 		
-		// Creating tasks for the AI
-		_grpTask = floor random 2;
-		switch (_grpTask) do{
-			// DEFEND waypoint
-			case 0:
-			{	
-				_angle = random 360;
-				_randomPlaceToSpawn = [(getMarkerPos (_enemySpawn select _placeToSpawn) select 0) + (_distanceToSpawn * cos _angle), (getMarkerPos (_enemySpawn select _placeToSpawn) select 1) + (_distanceToSpawn * sin _angle)];
+		if(_doPatrol) then {
+			_angle = random 360;
+			_randomPlaceToSpawn = [(getMarkerPos (_enemySpawn select _placeToSpawn) select 0) + (_distanceToSpawn * cos _angle), (getMarkerPos (_enemySpawn select _placeToSpawn) select 1) + (_distanceToSpawn * sin _angle)];
+			[_tempGroup, _randomPlaceToSpawn, 200, 15] call CBA_fnc_taskPatrol;
+		} else 
+		{
+			// Creating tasks for the AI
+			_grpTask = floor random 2;
+			switch (_grpTask) do{
+				// DEFEND waypoint
+				case 0:
+				{	
+					_angle = random 360;
+					_randomPlaceToSpawn = [(getMarkerPos (_enemySpawn select _placeToSpawn) select 0) + (_distanceToSpawn * cos _angle), (getMarkerPos (_enemySpawn select _placeToSpawn) select 1) + (_distanceToSpawn * sin _angle)];
+					
+					[_tempGroup, _randomPlaceToSpawn, 100, 2, true] call CBA_fnc_taskDefend;
+				};
 				
-				[_tempGroup, _randomPlaceToSpawn, 100, 2, true] call CBA_fnc_taskDefend;
-			};
+				// PATROL
+				case 1:
+				{
+					_angle = random 360;
+					_randomPlaceToSpawn = [(getMarkerPos (_enemySpawn select _placeToSpawn) select 0) + (_distanceToSpawn * cos _angle), (getMarkerPos (_enemySpawn select _placeToSpawn) select 1) + (_distanceToSpawn * sin _angle)];
+					[_tempGroup, _randomPlaceToSpawn, 200, 15] call CBA_fnc_taskPatrol;
+				};
+				
 			
-			// PATROL
-			case 1:
-			{
-				_angle = random 360;
-				_randomPlaceToSpawn = [(getMarkerPos (_enemySpawn select _placeToSpawn) select 0) + (_distanceToSpawn * cos _angle), (getMarkerPos (_enemySpawn select _placeToSpawn) select 1) + (_distanceToSpawn * sin _angle)];
-				[_tempGroup, _randomPlaceToSpawn, 200, 15] call CBA_fnc_taskPatrol;
 			};
-			
-		
 		};
-		
-		
+			
 	};
 	_spawnedSquads;
 };	

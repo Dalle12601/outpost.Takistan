@@ -50,6 +50,14 @@ class Params
 		default = 8;
 	};
 	
+	class nrOfEnemySquadsAtIED
+	{
+		title = "Number of squads at IED-factory";
+		values[] = {0,1,3,5}; // Values; must be integers; has to have the same number of elements as 'texts'
+		texts[] = {"None", "One","Few","Many"}; // Description of each selectable item
+		default = 3;
+	}
+	
 
 };
 

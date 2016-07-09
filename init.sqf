@@ -6,6 +6,7 @@ nrOfEnemySquadsForTransport		= paramsArray select 0;
 nrOfEnemySquadsForAssist	 	= paramsArray select 1;
 nrOfEnemySquadsForTowing 		= paramsArray select 2;
 nrOfEnemySquadsAtAO				= paramsArray select 3;
+nrOfEnemySquadsAtIED			= paramsArray select 4;
 
 
 // Variable for keeping track of completed tasks
