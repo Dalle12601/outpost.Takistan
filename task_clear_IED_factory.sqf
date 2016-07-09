@@ -40,10 +40,10 @@ publicVariable "doWeHaveATask";
 
  
 // Spawn the objects
-_compReference = ["iedDalle_1"] call LARs_fnc_spawnComp;
+// _compReference = ["iedDalle_1"] call LARs_fnc_spawnComp;
  sleep(5);
 // Getting the place to blow up
-_placeToDestroy 	= getPos ied1;
+_placeToDestroy 	= [ied1, ied1];
 
 // Spawn enemies
 _spawnedSquads = [nrOfEnemySquadsAtIED, _placeToDestroy, _squadTypes, 100, true] call compile preprocessFileLineNumbers "Basic_Functions\spawnEnemies.sqf";
@@ -77,4 +77,4 @@ sleep(15);
 // Delete the factory 
 [_compReference] call LARs_fnc_deleteComp;
 // Delete remaining units, if any
-[_spawnedSquads] call compile preprocessFileLineNumbers "Basic_Functions\deSpawnEnemies.sqf";
+// [_spawnedSquads] call compile preprocessFileLineNumbers "Basic_Functions\deSpawnEnemies.sqf";
