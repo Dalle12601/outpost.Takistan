@@ -41,7 +41,7 @@ publicVariable "doWeHaveATask";
  
 // Spawn the objects
 _compReference = ["iedDalle_1"] call LARs_fnc_spawnComp;
- 
+ sleep(5);
 // Getting the place to blow up
 _placeToDestroy 	= getPos ied1;
 

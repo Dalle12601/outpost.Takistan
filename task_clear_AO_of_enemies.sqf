@@ -85,51 +85,9 @@ _taskVar = [west, [_task], [_taskDescL, _taskTitle], _zoneToDefend, _taskState, 
 
 
 // Spawn enemies
-_spawnedSquads = [nrOfEnemySquadsAtAO, _enemySpawn, _squadTypes, 100] call compile preprocessFileLineNumbers "Basic_Functions\spawnEnemies.sqf";
+_spawnedSquads = [nrOfEnemySquadsAtAO, _enemySpawn, _squadTypes, 100, false] call compile preprocessFileLineNumbers "Basic_Functions\spawnEnemies.sqf";
 
 
-/* GAMMEL KODE
-	
-	
-	
-	
-	
-		if (i % 2 == 0) then {
-			_grp_1 = [_enemySpawn_1, resistance, (configFile >> "CfgGroups" >> "Indep" >> "LOP_AM" >> "Infantry" >> "LOP_AM_Support_section")] Call BIS_fnc_spawnGroup;
-				// LOP_AM_Support_section
-				// LOP_AM_Rifle_squad
-				// LOP_AM_AT_section
-				// LOP_AM_Patrol_section
-				[_grp_1, _enemySpawn_1, 100, 2, true] call CBA_fnc_taskDefend;
-			
-			
-		} else {
-		if (i % 3 == 0) then {
-			_grp_1 = [_enemySpawn_2, resistance, (configFile >> "CfgGroups" >> "Indep" >> "LOP_AM" >> "Infantry" >> "LOP_AM_Patrol_section")] Call BIS_fnc_spawnGroup;
-			// [_grp_1, _zoneToDefend, 100, 2, true] call CBA_fnc_taskDefend;
-			[_grp_1, _zoneToDefend, 100] call BIS_fnc_taskPatrol;
-			
-			
-		/*
-			_wp = _InfSquad2 addWaypoint [[_posOfCar select 0,_posOfCar select 1], 0];
-			_wp setWaypointType "MOVE";
-			_wp setWaypointStatements ["True", ""];
-			
-		} else {
-			_grp_1 = [_enemySpawn_3, resistance, (configFile >> "CfgGroups" >> "Indep" >> "LOP_AM" >> "Infantry" >> "LOP_AM_AT_section")] Call BIS_fnc_spawnGroup;
-			// [_grp_1, _enemySpawn_3, 100] call BIS_fnc_taskPatrol;
-			[_grp_1, _enemySpawn_3, 100, 2, true] call CBA_fnc_taskDefend;
-		/*
-			_wp = _InfSquad2 addWaypoint [[_posOfCar select 0,_posOfCar select 1], 0];
-			_wp setWaypointType "MOVE";
-			_wp setWaypointStatements ["True", ""];
-		
-			};
-		};
-		sleep(0.5);
-	};
-};
-*/
 
 // Assign the global variable to task ID
 currentAssignedTask = _task;
@@ -140,7 +98,7 @@ _trig = createTrigger ["EmptyDetector", _zoneToDefend];
 _trig setTriggerType "NONE";
 _trig setTriggerActivation ["WEST SEIZED", "PRESENT", false];
 _trig setTriggerArea [200, 200, 0, false];
-_trig setTriggerTimeout [40, 60, 80, false];
+_trig setTriggerTimeout [80, 80, 80, false];
 _trig setTriggerStatements ["this", "", ""];
 
 while {!(triggerActivated _trig)} do 
