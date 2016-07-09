@@ -35,7 +35,7 @@ publicVariable "doWeHaveATask";
 
  
 // Spawn the objects
-_compReference = ["iedFactory"] call LARs_fnc_spawnComp;
+_compReference = ["iedDalle_1"] call LARs_fnc_spawnComp;
 
 
  
