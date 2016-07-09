@@ -35,7 +35,7 @@ publicVariable "doWeHaveATask";
 
  
 // Spawn the objects
-_compReference = [ "iedMine"] call LARs_fnc_spawnComp;
+_compReference = ["iedFactory"] call LARs_fnc_spawnComp;
 
 
  
@@ -48,16 +48,18 @@ _taskVar = [west, [_task], [_taskDescL, _taskTitle], _placeToDestroy, _taskState
 
 
  // Wait for the IED to be destroyed
- while {(alive ied1)} do 
- {
+while {(alive ied1)} do 
+{
 	sleep(2);
 };
 
 
 // Wait some time before completing the task
 sleep(10);
+
 // Complete the task
 [_task, 'Succeeded', true] spawn BIS_fnc_taskSetState;
+
 // Do the stuff we have to do
 doWeHaveATask = false;
 publicVariable "doWeHaveATask";
