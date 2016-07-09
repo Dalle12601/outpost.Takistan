@@ -84,43 +84,10 @@ _taskVar = [west, [_task], [_taskDescL, _taskTitle], _zoneToDefend, _taskState, 
 
 
 
-// Spawn the enemy units!
-if(nrOfEnemySquadsAtAO > 0) then {
-	// Spawn enemies, if parameter says so
-	for "i" from 1 to nrOfEnemySquadsAtAO do
-	{
-		_squadToSpawn = floor random 4;
-		_placeToSpawn = floor random (count _enemySpawn);
+// Spawn enemies
+_spawnedSquads = [nrOfEnemySquadsAtAO, _enemySpawn, _squadTypes, 100] call compile preprocessFileLineNumbers "Basic_Functions\spawnEnemies.sqf";
 
 
-		// _enemySquads pushBack [_enemySpawnMarkers select _placeToSpawn, resistance, (_squadTypes select 2) ] Call BIS_fnc_spawnGroup;
-		// [getMarkerPos (_enemySpawn select _placeToSpawn), resistance, (configFile >> "CfgGroups" >> "Indep" >> "LOP_AM" >> "Infantry" >> "LOP_AM_Support_section")] Call BIS_fnc_spawnGroup;
-		_tempGroup = [getMarkerPos (_enemySpawn select _placeToSpawn), resistance, _squadTypes select _squadToSpawn] Call BIS_fnc_spawnGroup;
-		
-		// Creating tasks for the AI
-		_grpTask = floor random 2;
-		switch (_grpTask) do{
-			// DEFEND waypoint
-			case 0:
-			{	
-				
-				[_tempGroup, getMarkerPos (_enemySpawn select _placeToSpawn), 100, 2, true] call CBA_fnc_taskDefend;
-			};
-			
-			// PATROL
-			case 1:
-			{
-				[_tempGroup, getMarkerPos (_enemySpawn select _placeToSpawn), 100, 10] call CBA_fnc_taskDefend;
-			};
-			
-		
-		};
-		
-		
-	};
-};	
-	
-	
 /* GAMMEL KODE
 	
 	
@@ -174,9 +141,25 @@ _trig setTriggerType "NONE";
 _trig setTriggerActivation ["WEST SEIZED", "PRESENT", false];
 _trig setTriggerArea [200, 200, 0, false];
 _trig setTriggerTimeout [40, 60, 80, false];
-_trig setTriggerStatements ["this", "stratMap addAction ['Open strategic map','openStrategicMap.sqf']; doWeHaveATask = false; publicVariable 'doWeHaveATask'; tasksDone = tasksDone + 1; [currentAssignedTask, 'Succeeded', true] spawn BIS_fnc_taskSetState; ", ""];
+_trig setTriggerStatements ["this", "", ""];
+
+while {!(triggerActivated _trig)} do 
+{ 	
+	// Now we wait for the trigger to fire
+	sleep(10);
+};
 
 
+stratMap addAction ['Open strategic map','openStrategicMap.sqf']; 
+doWeHaveATask = false; publicVariable 'doWeHaveATask'; 
+tasksDone = tasksDone + 1; 
+[currentAssignedTask, 'Succeeded', true] spawn BIS_fnc_taskSetState; 
+
+
+
+// Wait for ppl to leave the zone
+sleep(600);
+[_spawnedSquads] call compile preprocessFileLineNumbers "Basic_Functions\deSpawnEnemies.sqf";
 
 
 
